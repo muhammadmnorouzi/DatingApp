@@ -69,8 +69,8 @@
           },
           "configurations": {
             "production": {
-              "sslKey": "./",
-              "sslCert": "./",
+              "sslKey": "ssl/domain.key",
+              "sslCert": "ssl/domain.csr",
               "ssl": true,
               "browserTarget": "ClientAngular:build:production"
             }
