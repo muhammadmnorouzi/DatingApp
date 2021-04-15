@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Extensions;
 using API.Interfaces;
+using API.Middleware;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -35,12 +36,21 @@ namespace API
         {
             services.AddApplicationServices(_config);
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                string[] allowedOrigins = _config.GetValue<string>("AllowedOrigins")?.Split(",") ?? new string[0];
+                options.AddPolicy("Default", builder =>
+                {
+                    builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .WithOrigins(allowedOrigins);
+                });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
-
-            services.AddCors();
             services.AddIdentityServices(_config);
         }
 
@@ -49,18 +59,18 @@ namespace API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
-            app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            // app.UseHttpsRedirection();
+
 
             app.UseRouting();
 
-            app.UseCors(policy =>
-            policy.AllowAnyHeader().AllowAnyMethod()
-            .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+            app.UseCors("Default");
 
             app.UseAuthentication();
             app.UseAuthorization();
