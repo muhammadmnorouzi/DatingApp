@@ -48,7 +48,7 @@ export class AccountService {
   }
 
   getNullUser() {
-    let nullUser: User = { username: '', token: '' };
+    let nullUser: User = { username: '', token: '', photoUrl: '' };
     return nullUser;
   }
 }
