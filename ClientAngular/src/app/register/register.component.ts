@@ -18,24 +18,25 @@ export class RegisterComponent implements OnInit {
   constructor(private accountService: AccountService, private toastr: ToastrService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    this.initializeRegisterForm();
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+
+    this.initializeRegisterForm();
   }
 
   initializeRegisterForm() {
-    this.registerForm = this.formBuilder.group({
-      gender: ['male'],
-      username: ['', Validators.required],
-      knownAs: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
-      city: ['', Validators.required],
-      counrty: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(25)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validator: this.isMatching('password', 'confirmPassword')
-    })
+    this.registerForm = new FormGroup({
+      gender: new FormControl('male'),
+      username: new FormControl('', [Validators.required]),
+      knownAs: new FormControl('', [Validators.required]),
+      dateOfBirth: new FormControl('', [Validators.required]),
+      city: new FormControl('', [Validators.required]),
+      counrty: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(25)]),
+      confirmPassword: new FormControl('', [Validators.required,]),
+    });
+
+    // this.registerForm.validator = this.isMatching('password', 'confirmPassword');
   }
 
   isMatching(controlName: string, matchingControlName: string) {
@@ -55,17 +56,17 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.accountService.register(this.registerForm.value).subscribe(response => {
-      // console.log(response)
-      // this.cancel();
-
+      console.log(response)
       this.router.navigateByUrl('/members');
     }, error => {
+      console.log(error);
       this.validationErrors = error;
     })
   }
 
   cancel() {
     this.cancelRegister.emit(false);
+    console.log('cancel');
   }
 
 }

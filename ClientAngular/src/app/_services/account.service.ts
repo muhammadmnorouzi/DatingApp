@@ -10,7 +10,7 @@ import { User } from '../_models/User';
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  private currentUserSourse = new ReplaySubject<User>(1);
+  private currentUserSourse = new ReplaySubject<User | null>(1);
   currentUser$ = this.currentUserSourse.asObservable();
 
   constructor(private http: HttpClient) { }
@@ -44,11 +44,12 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem('user');
-    this.currentUserSourse.next(this.getNullUser());
+    this.currentUserSourse.next(null);
   }
+  // this.getNullUser()
 
-  getNullUser() {
-    let nullUser: User = { username: '', token: '', photoUrl: '' };
-    return nullUser;
-  }
+  // getNullUser() {
+  //   let nullUser: User = { username: '', token: '', photoUrl: '' };
+  //   return nullUser;
+  // }
 }

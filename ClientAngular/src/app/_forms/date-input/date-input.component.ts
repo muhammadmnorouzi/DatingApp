@@ -14,6 +14,7 @@ export class DateInputComponent implements ControlValueAccessor {
 
   constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this;
+
     this.bsConfig = new BsDatepickerConfig();
     this.bsConfig.containerClass = 'theme-dark-blue';
     this.bsConfig.dateInputFormat = 'DD MMMM YYYY'

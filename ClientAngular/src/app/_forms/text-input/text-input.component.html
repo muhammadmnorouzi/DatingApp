@@ -1,15 +1,17 @@
 <div class="form-group">
-    <input [class.is-invalid]="ngControl.touched && ngControl.invalid" type={{type}} class="form-control"
-        [formControl]="ngControl.control" placeholder={{label}}>
-    <div *ngIf="ngControl.control && ngControl.control?.errors?.required" class="invalid-feedback">Please enter a
-        {{label}}</div>
-    <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
-        {{label}} must be at least {{ngControl.control.errors.minlength['requiredLength']}}
+    <input [class.is-invalid]="ngControl.touched && ngControl.invalid" placeholder='{{this.label}}' type={{this.type}}
+        class="form-control" [formControl]="this.ngControl.control">
+
+    <div *ngIf="this.ngControl.control && this.ngControl.control?.errors?.required" class="invalid-feedback">Please
+        enter a
+        {{this.label}}</div>
+    <div *ngIf="this.ngControl.control?.errors?.minlength" class="invalid-feedback">
+        {{this.label}} must be at least {{this.ngControl.control.errors.minlength['requiredLength']}}
     </div>
-    <div *ngIf="ngControl.control?.errors?.maxlength" class="invalid-feedback">
-        {{label}} must be at most {{ngControl.control.errors.maxlength['requiredLength']}}
+    <div *ngIf="this.ngControl.control?.errors?.maxlength" class="invalid-feedback">
+        {{this.label}} must be at most {{this.ngControl.control.errors.maxlength['requiredLength']}}
     </div>
-    <div *ngIf="ngControl.control?.errors?.isMatching" class="invalid-feedback">
+    <div *ngIf="this.ngControl.control?.errors?.isMatching" class="invalid-feedback">
         Passwords do not match
     </div>
 </div>
