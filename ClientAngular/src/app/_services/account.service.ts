@@ -28,6 +28,7 @@ export class AccountService {
   }
 
   register(model: any) {
+    console.log(model);
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
         if (user) {
@@ -46,10 +47,5 @@ export class AccountService {
     localStorage.removeItem('user');
     this.currentUserSourse.next(null);
   }
-  // this.getNullUser()
 
-  // getNullUser() {
-  //   let nullUser: User = { username: '', token: '', photoUrl: '' };
-  //   return nullUser;
-  // }
 }

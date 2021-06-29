@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     return this.accountService.currentUser$.pipe
       (
         map(user => {
-          if (user == this.accountService.getNullUser()) this.toastr.error("You shall not pass!");
+          if (user == null) this.toastr.error("You shall not pass!");
           return !!user;
         })
       )
