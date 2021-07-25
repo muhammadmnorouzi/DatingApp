@@ -13,7 +13,7 @@ import { MessageService } from 'src/app/_services/message.service';
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent implements OnInit {
-  @ViewChild("memberTabs", { static: false }) memberTabs: TabsetComponent;
+  @ViewChild("memberTabs") memberTabs: TabsetComponent;
   galleryOptions: NgxGalleryOptions[] = [];
   galleryImages: NgxGalleryImage[] = [];
   member: Member;
@@ -23,21 +23,15 @@ export class MemberDetailComponent implements OnInit {
 
   constructor(private memberService: MembersService, private route: ActivatedRoute, private messageService: MessageService) { }
 
-  ngAfterViweInit(): void {
-    console.log("ngAfterViewInit called");
-    console.log("memberTabs : " + this.memberTabs);
-    this.route.queryParams.subscribe(params => {
-      params.tab ? this.selectTab(params.tab) : this.selectTab(0);
-    })
-  }
-
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.member = data.member;
       this.galleryImages = this.getImages();
     })
 
-    // this.loadMember();
+    this.route.queryParams.subscribe(params => {
+      params.tab ? this.selectTab(params.tab) : this.selectTab(0);
+    })
 
     this.galleryOptions = [
       {
@@ -49,8 +43,6 @@ export class MemberDetailComponent implements OnInit {
         preview: false
       }
     ]
-
-    this.ngAfterViweInit();
   }
 
   getImages(): NgxGalleryImage[] {
@@ -82,7 +74,7 @@ export class MemberDetailComponent implements OnInit {
   }
 
   selectTab(tabId: number) {
-    if (this.memberTabs !== null) this.memberTabs.tabs[tabId].active = true;
+    this.memberTabs.tabs[tabId].active = true;
   }
 
   onTabActivated(data: TabDirective) {
